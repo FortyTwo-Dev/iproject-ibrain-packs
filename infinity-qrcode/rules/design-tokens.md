@@ -27,18 +27,18 @@ existing layout proportions (ADR-0005).
 - Library tokens use `--it-*`: `--it-bg`, `--it-fg`, `--it-surface`,
   `--it-border`, `--it-accent`, `--it-accent-fg`, `--it-danger`.
 - Component tokens use `--it-button-*` and `--it-input-*`.
-- Tailwind is for layout only. Its semantic colours are mapped to `--it-*` in
-  `src/css/style.css`:
-  - `background` → `--it-bg`
-  - `foreground` → `--it-fg`
-  - `primary` → `--it-accent`
-  - `secondary` → `--it-surface`
-  - `border` → `--it-border`
-  - `destructive` → `--it-danger`
-  - `success` → `--it-success`
-  - `warning` → `--it-warning`
-  - `info` → `--it-info`
-- Use `border-border`, not `border-secondary`, for borders.
+- No utility framework is installed (ADR-0008). The page arrangement lives
+  in `src/css/layout/` as named application classes on the structural
+  tokens (`--it-space-*`, `--it-gutter`, `--it-container-*`,
+  `--it-section-gap`, `--it-stack-gap`); the brand layer (the yellow
+  accent binding, the typefaces, the bright-accent behaviours) lives in
+  `src/css/brand.css`.
+- Before inventing a new class, read the existing vocabulary of
+  `src/css/layout/` (`app-container`, `page-*`, `stack`, `row`,
+  `section-stack`, `panel-title`, `notice-*`, `error-box`, ...).
+- Every class referenced in a template must resolve to the theme package or
+  to the application CSS. An inert class name is a hidden regression: audit
+  the vocabulary whenever a styling source is added or removed.
 - Do not hard-code a colour that a token already names. A hexadecimal value in a
   component is only acceptable as data (for example a QR colour preview).
 - Radius is a token (`--it-radius`), currently `0px`. Do not introduce rounded
@@ -74,20 +74,18 @@ existing layout proportions (ADR-0005).
 
 ## Cascade
 
-Layer order is declared once, at the top of `src/css/style.css`, before the
-imports:
+Layer order is declared once, at the top of `src/css/style.css`:
 
 ```
-theme, base, it.tokens, it.base, it.variants, components, utilities, it.overrides
+it.tokens, it.base, it.variants, components, it.overrides
 ```
 
-- Tailwind preflight (`base`) runs before the theme tokens and base styles.
-- Tailwind utilities run after `it.base` and `it.variants`, so a layout
-  utility such as `w-20` or `sr-only` wins over a library default.
+- `src/css/style.css` is loaded by the index before the module scripts, so
+  its statement wins and the theme package's own statement merges into it.
+- `components` carries the application classes of `src/css/layout/`,
+  above the theme variants: an app class overrides a library default at
+  equal specificity.
 - `it.overrides` stays last for a deliberate, documented exception.
-- Do not import the theme stylesheet before `src/css/style.css`: the first
-  `@layer` statement fixes the whole order, and the theme would end up below
-  Tailwind's reset.
 
 ## Verification
 

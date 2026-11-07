@@ -24,14 +24,17 @@ three secondary pages:
 - `src/components/qr/`: `QrCanvas`, the shared matrix renderer.
 - `src/components/theme/`: thin Vue wrappers for the theme library, no styles.
 - `src/components/layout/`: header, footer and PWA prompt.
-- `src/theme/`: design tokens, base HTML styles and `it-*` variants.
+- `src/css/`: the cascade contract (`style.css`), the brand layer
+  (`brand.css`) and the application layout classes (`layout.css`).
+- The `@infinitylib/infinity-theme` package owns the tokens, the base HTML
+  styles and the `it-*` variants.
 - `src/composables/`: WASM loaders and shared UI state.
 - `src/lib/qrcode/`: payload builders, validation, matrix rendering, export.
 - `src/types/`: domain types.
 - `src/router/`: routes and guards.
 
 Dependencies point downward: views → components/composables → lib/types. A
-lower layer must not import a view or a component. `src/theme` must not import
+lower layer must not import a view or a component. `src/css` must not import
 Vue.
 
 ## Rules
