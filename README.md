@@ -9,6 +9,7 @@ same way it does for the library packs.
 | Pack | Use when |
 | --- | --- |
 | `infinity-qrcode` | The project is [infinity-qrcode](https://github.com/FortyTwo-Dev/infinity-qrcode) |
+| `infinity-quiz` | The project is [infinity-quiz](https://github.com/FortyTwo-Dev/infinity-quiz) |
 
 New infinity-* projects add their pack here, one directory per project.
 A pack directory is named after the `pack:` name in its manifest.

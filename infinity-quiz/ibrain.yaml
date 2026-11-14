@@ -1,0 +1,12 @@
+# Project layer of infinity-quiz.
+#
+# Declared in the application's ibrain.yaml as a git source carrying
+# `layer: project`. No `priority` here: the project layer already ranks above
+# every pack, and ibrain rejects a priority on that entry.
+pack:
+  name: infinity-quiz
+
+repo: https://github.com/FortyTwo-Dev/iproject-ibrain-packs
+
+content:
+  rules: rules
