@@ -6,47 +6,71 @@ paths:
 
 # Styling
 
-Tailwind CSS v4 and daisyUI 5, no component-scoped CSS framework, no CSS file
-besides `src/css/main.css`.
+`@infinitylib/infinity-theme` for the tokens and the component classes, plus
+`@infinitylib/infinity-theme-vue` for the wrappers the package ships. No Tailwind,
+no daisyUI, no component-scoped CSS framework. ADR-002
+(`docs/decisions/`) records the migration and supersedes ADR-001.
+
+## The cascade
+
+`src/css/style.css` declares the layer order before anything else, because the
+first declaration wins:
+
+```css
+@layer it.tokens, it.base, it.variants, components, it.overrides;
+```
+
+`index.html` loads that file, then `src/main.ts` imports the theme package, then
+`brand.css`, then the application stylesheets. Declaring the order after the
+package would silently reorder the layers.
 
 ## Where a style lives
 
 | Need | Where |
 | --- | --- |
-| A utility, a layout | Tailwind classes in the template |
-| A daisyUI variant of a prop | A `Record<Prop, string>` of literal classes, as in `DButton.vue` |
-| A pattern daisyUI builds dynamically | `@source inline()` in `src/css/main.css` |
-| A colour, a radius | The daisyUI theme blocks in `src/css/main.css` |
-| A layout class shared by several views | `src/css/main.css`, with the other application layout classes |
+| A token the package names | Bind it in `src/css/brand.css`, never a literal in a component |
+| The accent, the typeface, the brand guard | `src/css/brand.css` |
+| A widget the package does not ship | `src/css/itheme/<widget>.css` + `src/components/itheme/It<Widget>.vue` |
+| The shell, the rail, the layout primitives | `src/css/layout/*.css` |
+| A screen's own composition | `src/css/views/<screen>.css` |
+| A quiz-specific surface | `src/css/quiz/index.css` |
+| A deliberate override of a package knob | `@layer it.overrides` in `brand.css`, with a comment saying why |
 
-## Dynamic classes
+A component never carries a `<style>` block, and no colour, radius or spacing
+value is hard-coded: the value comes from an `--it-*` token, or from an `--iq-*`
+token declared in `brand.css` when the package has no equivalent.
 
-Tailwind v4 detects classes statically. A class assembled by interpolation is
-invisible to it and disappears from the production build unless a pattern
-safelists it. ADR-001 (`docs/decisions/`) settles the rule:
+## Widgets and variants
 
-- a typed, project-specific variant uses a `Record` of full class names;
-- a daisyUI class built from a prop (`card-${size}`) is only acceptable when the
-  exact pattern is in the `@source inline()` list of `src/css/main.css`;
-- `class="custom-${value}"` on a class Tailwind does not know is a bug: the page
-  loses its style in production while looking fine in development.
-
-Adding a variant means adding its class to the `Record` or its pattern to the
-safelist, in the same change.
+- A typed variant uses a `Record<Variant, string>` of complete class names, as in
+  `ItBadge.vue`; never assemble a class from a variable.
+- A widget written here is a candidate for upstream: `it-*` classes, `--it-*`
+  tokens only, one file per widget, an accessible name and a visible focus.
+  ADR-002 states the promotion contract, including the collision rule on the
+  `components` layer.
+- A control the package ships (`ItButton`, `ItInput`, `ItSelect`, `ItTextarea`,
+  `ItCheckbox`, `ItRadio`, `ItField`, `ItOption`) is imported from
+  `@infinitylib/infinity-theme-vue` and used directly. No local wrapper copies it.
+- The package styles every bare `<button>` as a text button, padding included.
+  A custom button therefore states its own box (padding, border, size) or the
+  glyph inside it gets squeezed.
 
 ## Themes
 
-- Built-in themes are generated in `src/constants/themes.ts`
-  (`infinity-<color>-<variant>`, default `infinity-blue-light`); the daisyUI
-  blocks live in `src/css/main.css`.
-- The global theme belongs to `useThemeStore`; a quiz may carry its own `theme`,
-  applied while it is played and restored afterwards.
-- An imported theme is validated by `src/utils/theme-import.ts` before it is
-  stored; a theme name is `[A-Za-z0-9_-]+`, never injected as raw CSS.
-- Dark and light are both first-class: a new surface is checked in the default
-  light theme and in `infinity-blue-dark`.
+- The accent is the charte green, `#00ff96`, bound once in `brand.css` on
+  `:root[data-accent='green']`. One application, one accent.
+- The mode is a choice: `data-theme="light|dark"` on `<html>`, written by
+  `useThemeStore` and normalized on read.
+- `--iq-accent-ink` is the accent mixed towards the foreground, because a bright
+  accent fails 4.5:1 as small text. A new accent binds its own ink.
+- A quiz may carry `theme: { mode, accent }`; it is applied while the quiz plays
+  and the global selection is restored afterwards. A quiz without a theme keeps
+  the global one.
+- Tints are mixed in `oklab`, not `oklch`: white has no hue to interpolate
+  towards in oklch, and a blue accent came out lavender.
 
 ## Accessibility
 
-Contrast, focus visibility and touch target size are not a styling afterthought:
-a daisyUI variant that fails contrast in one of the shipped themes is a defect.
+Contrast, focus visibility and touch target size are not a styling afterthought.
+A surface is checked in both modes, with its accent, and a variant that fails
+contrast in one of them is a defect, not a preference.

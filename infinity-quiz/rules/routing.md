@@ -14,7 +14,7 @@ The generic routing rule applies. Project specifics:
 - Every route is lazy: `component: () => import('@/views/<Name>View.vue')`.
 - Names are kebab-case and stable, they appear in `<RouterLink :to="{ name }">`:
   `quiz-list`, `quiz`, `results`, `statistics`, `quiz-management`,
-  `quiz-create`, `quiz-edit`, `quiz-import-export`, `theme-import`, `not-found`.
+  `quiz-create`, `quiz-edit`, `quiz-import-export`, `not-found`.
 - A route that carries a parameter sets `props: true` and the view receives it
   as a typed prop. Only a composable that owns the flow may read the route
   (`useQuiz` reads `route.params.quizId`); a view does not reach into

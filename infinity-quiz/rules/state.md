@@ -42,7 +42,7 @@ explicit storage key and an allowlist of the fields it persists:
 | quiz | `STORAGE_KEYS.quizzes` | `quizzes` |
 | quiz session | `STORAGE_KEYS.session` | `currentQuizId`, `currentQuestionIndex`, `selectedAnswers`, `skippedQuestions`, `verifiedQuestions`, `score`, `isCompleted`, `shuffledQuiz`, `quizSeed`, `timeLeft` |
 | quiz history | `STORAGE_KEYS.history` | `results` |
-| theme | `STORAGE_KEYS.theme` | `globalThemeName`, `importedThemes` |
+| theme | `STORAGE_KEYS.theme` | `globalTheme` (a `{ mode, accent }` pair) |
 
 - The key comes from `STORAGE_KEYS` in `src/constants/index.ts`, never a literal
   string.
@@ -51,6 +51,10 @@ explicit storage key and an allowlist of the fields it persists:
 - Never persist derived state (a score computed from answers, a filtered list) or
   transient UI state (a modal being open, a loading flag).
 - `quizSeed` is persisted on purpose: it replays the same shuffle after a reload.
+- The theme payload changed shape with the migration: `src/main.ts` rewrites it
+  before Pinia rehydrates, and the legacy daisyUI names (`infinity-blue-light`, …)
+  still resolve through `LEGACY_THEME_NAMES`. Read a stored theme through
+  `normalizeGlobalTheme` / `normalizeQuizTheme`, never directly.
 
 ## Testing
 

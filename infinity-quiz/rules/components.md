@@ -23,10 +23,12 @@ const emit = defineEmits<{ select: [answerIndex: number]; skip: [] }>()
 
 ## The two wrapper families
 
-- `src/components/daisy-ui/`: `D*`. A wrapper maps its typed props to daisyUI
-  classes and renders the markup; it holds no state, no store, no domain type.
-  Classes come from a `Record<Variant, string>` (`DButton.vue`) or from a pattern
-  safelisted in `src/css/main.css`; see `styling`.
+- `src/components/itheme/`: `It*`. A widget the theme package does not ship
+  yet maps its typed props to `it-*` classes and renders the markup; it holds
+  no state, no store, no domain type. Classes come from a
+  `Record<Variant, string>` (`ItBadge.vue`); see `styling`. A control the
+  package already ships is imported from `@infinitylib/infinity-theme-vue`
+  and used directly, with no local copy.
 - `src/components/layout/`: `L*`. Layout primitives and the shell. They accept
   slots and layout props, nothing else.
 
@@ -38,7 +40,7 @@ component belongs in `src/components/quiz/` and uses the wrapper.
 - Cards in `quiz/card/`, form steps in `quiz/form/`, charts in `quiz/charts/`.
 - A component receives data through props and signals intent through emits.
   Reading a store directly is reserved for surfaces that are the page's own
-  content, and never for a daisyUI or layout component.
+  content, and never for a theme widget or a layout component.
 - A view owns its page state (`useQuizForm`, route parameters) and composes
   domain components; it does not re-implement scoring or shuffling.
 

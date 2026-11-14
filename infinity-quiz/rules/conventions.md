@@ -34,11 +34,11 @@ applies.
 | Constant | UPPER_SNAKE_CASE | `PASS_THRESHOLD`, `STORAGE_KEYS` |
 | Component file | PascalCase, one component per file | `QuizQuestionCard.vue` |
 | View | PascalCase, `View` suffix | `ResultsView.vue` |
-| daisyUI wrapper | `D` prefix | `DButton.vue`, `DCard.vue` |
+| Theme widget | `It` prefix, like the package | `ItCard.vue`, `ItBadge.vue` |
 | Layout primitive | `L` prefix | `LContainer.vue`, `LGrid.vue` |
 | Composable file | `useX` camelCase | `useSeededRandom.ts` |
 | Store file | kebab-case, `-store` suffix | `quiz-session-store.ts` |
-| Any other module | kebab-case | `array-utils.ts`, `theme-import.ts` |
+| Any other module | kebab-case | `array-utils.ts`, `theme.ts` |
 | Test file | kebab-case, `.spec.ts` suffix | `useScore.spec.ts` |
 | Store id | camelCase, the name after `use` in the store's hook | `useQuizSessionStore` -> `'quizSession'` |
 
