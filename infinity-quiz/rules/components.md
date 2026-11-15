@@ -21,6 +21,27 @@ const props = withDefaults(defineProps<Props>(), { size: 'md' })
 const emit = defineEmits<{ select: [answerIndex: number]; skip: [] }>()
 ```
 
+## Props
+
+A prop that is not required declares its default. This is not cosmetic: Vue
+casts an absent `boolean` prop to `false` before any component code runs, so a
+fallback written in the body never fires.
+
+```ts
+// Dead code: `showFeedback` is already `false` when the caller omits it.
+const props = defineProps<{ showFeedback?: boolean }>()
+const showFeedback = computed(() => props.showFeedback ?? true)
+
+// What the intent looks like when it is declared.
+const props = withDefaults(defineProps<Props>(), { showFeedback: true })
+```
+
+- A boolean prop declares its default, `false` unless there is a reason.
+- A component never tests a boolean prop against `undefined`: the third state
+  does not survive the cast, so it cannot be expressed that way.
+- A string or number prop that must stay absent says so explicitly:
+  `withDefaults(defineProps<Props>(), { label: undefined })`.
+
 ## The two wrapper families
 
 - `src/components/itheme/`: `It*`. A widget the theme package does not ship
