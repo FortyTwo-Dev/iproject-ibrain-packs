@@ -22,6 +22,7 @@ preference lives in `localStorage`, through Pinia and
 | `/create` | `quiz-create` | `QuizFormView` | Create a quiz, step by step |
 | `/edit/:quizId` | `quiz-edit` | `QuizFormView` | Edit an existing quiz |
 | `/import-export` | `quiz-import-export` | `QuizImportExportView` | JSON import and export |
+| `/settings` | `settings` | `SettingsView` | Preferences: reading font, planned account, sync and export |
 | `/:pathMatch(.*)*` | `not-found` | `NotFoundView` | Catch-all |
 
 ## Layers
@@ -35,8 +36,8 @@ preference lives in `localStorage`, through Pinia and
   for upstream; see ADR-002.
 - `src/components/layout/`: the application shell (`AppLayout`, `AppSidebar`)
   and the `L*` layout primitives (`LContainer`, `LGrid`, `LFlex`).
-- `src/components/common/`: cross-feature UI: modal, notification, theme
-  toggle.
+- `src/components/common/`: cross-feature UI: modal, credits dialog,
+  notification, theme toggle.
 - `src/components/quiz/`: domain UI, grouped by role: `card/` for the quiz
   surfaces, `form/` for the creation steps, `charts/`, `modal/`.
 - `src/components/quiz-import-export/`: the import and export cards.
@@ -46,12 +47,14 @@ preference lives in `localStorage`, through Pinia and
   and statistics shapes.
 - `src/utils/`: pure functions, no Vue import, no side effect.
 - `src/constants/`: score thresholds, pass threshold, storage keys, the theme
-  modes and accents. Never repeat those literals elsewhere.
+  modes and accents, the application version and the credits. Never repeat
+  those literals elsewhere.
 - `src/css/style.css`: the cascade order, declared before the theme package.
 - `src/css/brand.css`: the accent, the typeface, the `--iq-*` tokens and the
   deliberate overrides of the package.
-- `src/css/itheme/`, `src/css/layout/`, `src/css/views/`, `src/css/quiz/`: the
-  application CSS, one file per widget, per shell concern or per screen.
+- `src/css/itheme/`, `src/css/layout/`, `src/css/common/`, `src/css/views/`,
+  `src/css/quiz/`: the application CSS, one file per widget, per shell
+  concern, per shared surface or per screen.
 - `src/router/index.ts`: the whole route table.
 - `src/__tests__/`: tests, mirrored by layer (`composables/`, `stores/`,
   `utils/`).
