@@ -25,6 +25,11 @@ preference lives in `localStorage`, through Pinia and
 | `/settings` | `settings` | `SettingsView` | Preferences: reading font, planned account, sync and export |
 | `/:pathMatch(.*)*` | `not-found` | `NotFoundView` | Catch-all |
 
+An install entry point is reserved at `/install` (route name `install`). It is
+not routed today: the catch-all answers, and nothing links to it. Shipping it
+later is a possibility, not an option this project rejects; ADR-003 records the
+shape it would take and why it is a screen rather than a button in the shell.
+
 ## Layers
 
 - `src/views/`: route screens. They own page state, read route parameters and
@@ -37,7 +42,7 @@ preference lives in `localStorage`, through Pinia and
 - `src/components/layout/`: the application shell (`AppLayout`, `AppSidebar`)
   and the `L*` layout primitives (`LContainer`, `LGrid`, `LFlex`).
 - `src/components/common/`: cross-feature UI: modal, credits dialog,
-  notification, theme toggle.
+  notification, theme toggle, PWA prompt.
 - `src/components/quiz/`: domain UI, grouped by role: `card/` for the quiz
   surfaces, `form/` for the creation steps, `charts/`, `modal/`.
 - `src/components/quiz-import-export/`: the import and export cards.
@@ -49,7 +54,9 @@ preference lives in `localStorage`, through Pinia and
 - `src/constants/`: score thresholds, pass threshold, storage keys, the theme
   modes and accents, the application version and the credits. Never repeat
   those literals elsewhere.
-- `src/css/style.css`: the cascade order, declared before the theme package.
+- `src/css/style.css`: the cascade order and the first-paint canvas, declared
+  before the theme package. `public/theme-init.js` applies the stored theme
+  before the stylesheet loads.
 - `src/css/brand.css`: the accent, the typeface, the `--iq-*` tokens and the
   deliberate overrides of the package.
 - `src/css/itheme/`, `src/css/layout/`, `src/css/common/`, `src/css/views/`,
@@ -58,6 +65,15 @@ preference lives in `localStorage`, through Pinia and
 - `src/router/index.ts`: the whole route table.
 - `src/__tests__/`: tests, mirrored by layer (`composables/`, `stores/`,
   `utils/`).
+
+## Offline
+
+The build is an installable PWA. `vite-plugin-pwa` generates the service worker,
+precaches the shell, the styles and the typefaces, and falls back to
+`index.html` for a deep link. The cache holds build output only: no attempt, no
+preference, no network response. `PwaPrompt` offers the update and never applies
+it behind the user's back, so an attempt in progress survives. ADR-003 records
+the decision; the manifest carries a static launch colour.
 
 ## Dependency direction
 
