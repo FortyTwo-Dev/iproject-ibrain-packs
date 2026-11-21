@@ -13,7 +13,7 @@ Infinity Project.
 | Repository | Contains | Stack |
 | --- | --- | --- |
 | `infinity-url-api` | Redirect route, REST API, analytics pipeline, jobs | Laravel 13, PHP 8.4, PostgreSQL 17, Valkey 8 |
-| `infinity-url-web` | Dashboard, marketing pages, QR rendering | Nuxt 4, Vue 3 |
+| `infinity-url` | Dashboard, marketing pages, QR rendering | Nuxt 4, Vue 3 |
 
 The dashboard is a client of the **public** API, exactly like `iQuiz` or a third
 party. There is no private endpoint reserved for the dashboard. If a screen needs
