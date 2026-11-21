@@ -89,3 +89,11 @@ scripts**. Always carry a citable reason — "one letter away from `laposte.fr`"
 the domain may be a legitimate business. It blocks only combined with another
 signal: domain younger than 30 days, blocklist hit, or recent reports. Homoglyph
 and mixed-script hits block on their own.
+
+**The brand list is a booster, never the foundation.** The generalisable signal is
+"young domain + absent from the top million + a login path", not "looks like a
+brand": popularity ranking (Tranco) is loaded locally and queried with no network
+call at creation. The list stays short (~120 entries), sourced and dated, because
+forgetting a brand is harmless while adding a wrong one blocks a legitimate link.
+New candidates are proposed by a weekly job over the phishing dumps and accepted
+by a human — never applied automatically.
