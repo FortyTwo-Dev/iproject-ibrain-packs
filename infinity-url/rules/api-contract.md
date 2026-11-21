@@ -57,6 +57,12 @@ X-Robots-Tag: noindex
 browser stops calling and clicks are lost. No body. `HEAD` is accepted and
 **not counted**.
 
+**No interstitial.** Never a "you are being redirected" page, a countdown, a
+`meta refresh` or a script: the success response has no body at all. The only
+pages served on `iurl.fr` are terminal states (`404`, `410`, `403`), and none of
+them redirects. An interstitial would break counting, latency, link previews and
+QR scans, and would reopen the door to a script on the link domain.
+
 ## Versioning
 
 `/v1` in the path. Additive changes only. A breaking change opens `/v2` with
