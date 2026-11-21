@@ -46,5 +46,8 @@ implement a third option silently, and do not re-litigate a settled point.
 - Billing, teams, roles beyond `owner`, SSO.
 - A third-party script on `iurl.fr`.
 - A session list exposed to the user.
+- A browser extension that observes navigation. A `302` with no body cannot host a
+  content script: detecting our redirects would require `webRequest` on every
+  site. Anonymous reporting already exists without an extension.
 
 Each of these is a product decision, not an implementation detail. Stop and ask.
