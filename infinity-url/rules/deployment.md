@@ -28,7 +28,7 @@ cookie.
 
 - Traefik is shared and already running: the project attaches to its external
   network, it does not ship its own.
-- Customer domains are issued **on demand**, gated by `GET /internal/tls/ask`
+- Customer domains (**v0.2**, D-127: they are out of v1) are issued **on demand**, gated by `GET /internal/tls/ask`
   requiring `X-Internal-Token`. The endpoint fails closed.
 - ACME **staging** everywhere except production. The production rate limit is 50
   certificates per registered domain per week.
