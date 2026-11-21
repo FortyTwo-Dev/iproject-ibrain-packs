@@ -77,3 +77,15 @@ Refuse on proof of danger, never on absence of proof of safety:
 | Non-HTTP scheme, credentials in URL | `422` |
 | Unreachable (timeout, DNS) | **Accepted**, logged, counted in a metric |
 | Reachable and clean | Accepted |
+
+Typosquatting is **deterministic, never a model**: a curated set of ~200 protected
+brands, a job that precomputes every variant (substitution, deletion, insertion,
+transposition, homoglyph, TLD swap, combosquat, concatenation) into an indexed
+table, and one lookup at creation. Add two at-runtime checks: the brand appearing
+in a **subdomain** of a third-party registrable domain, and **mixed Unicode
+scripts**. Always carry a citable reason — "one letter away from `laposte.fr`".
+
+**A typosquat alone never blocks.** It sends the link to manual review, because
+the domain may be a legitimate business. It blocks only combined with another
+signal: domain younger than 30 days, blocklist hit, or recent reports. Homoglyph
+and mixed-script hits block on their own.
