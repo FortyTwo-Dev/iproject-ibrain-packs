@@ -66,3 +66,21 @@ absent, the report is fully anonymous and the confirmation page says so.
 - A browser extension that observes navigation: a `302` with no body cannot host a
   content script.
 - Automatic blocking from a report.
+
+## AI-assisted triage (v0.2 only)
+
+A language model may help rank and summarise reports. It never decides.
+
+- **Input is structured signals, never page content**: registrable domain, domain
+  age, blocklist hits, redirect hops, TLS age, punycode, mixed scripts, brand in
+  subdomain, recent report count. A phishing page is attacker-written text; feeding
+  it to a model with tool access is a prompt-injection path into moderation.
+- **Read-only tools only.** No `block`, no `report`, no status change. The
+  operator decides.
+- **Never send** the reporter's free text, their email, or any IP: the endpoint is
+  a third party, however European.
+- **Optional and off by default** (`AI_TRIAGE_ENABLED=false`). The product works
+  identically without it, and the model is interchangeable behind an
+  OpenAI-compatible API.
+- The model writes a note with reasons; the citable motivation must still come
+  from the signals.
