@@ -91,11 +91,11 @@ signal: domain younger than 30 days, blocklist hit, or recent reports. Homoglyph
 and mixed-script hits block on their own.
 
 **The brand list is a booster, never the foundation.** The generalisable signal is
-"young domain + absent from the top million + a login path", not "looks like a
-brand": popularity ranking (Majestic Million, CC BY 3.0; **not** Tranco, which aggregates
-Cloudflare Radar under a non-commercial licence) is loaded locally and queried
-with no network call at creation. Popularity is a weak signal: a link-based
-ranking under-ranks low-visibility consumer brands, so it never blocks alone. The list stays short (~120 entries), sourced and dated, because
+"young domain + a login path", not "looks like a brand". There is **no popularity
+signal**: a rank measures inbound links, not trustworthiness, it duplicates domain
+age, and it mis-ranks low-visibility legitimate brands (a retail bank can sit at
+rank 963 189). The Majestic Million was used once, by hand, to build the seed
+list; it is never fetched by a job, versioned, or redistributed. The list stays short (~120 entries), sourced and dated, because
 forgetting a brand is harmless while adding a wrong one blocks a legitimate link.
 New candidates are proposed by a weekly job over the phishing dumps and accepted
 by a human — never applied automatically.
